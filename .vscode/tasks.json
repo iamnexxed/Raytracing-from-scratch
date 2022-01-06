@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C/C++: g++.exe build active file",
+            "command": "D:\\Program Files (x86)\\mingw-w64\\i686-8.1.0-posix-dwarf-rt_v6-rev0\\mingw32\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",  
+                "${workspaceRoot}/${fileBasenameNoExtension}.exe",  //  Concentrated deposit EXE
+
+
+                "-I",  "${workspaceFolder}/include",   //  The include directory of the library is specified here, the default is not
+                "-L",  "${workspaceFolder}/lib",        //  Note that this line specifies the lib directory of the library, no default
+                
+                "-l",  "glut32",                     // Use GLUT
+                "-l",  "glu32",
+                "-l",  "opengl32",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
