@@ -9,9 +9,9 @@ const int halfWindowWidth = CANVAS_WIDTH / 2;
 const int halfWindowHeight = CANVAS_HEIGHT / 2;
 
 // View port properties
-#define VIEWPORT_WIDTH  1200
-#define VIEWPORT_HEIGHT 1000
-const double distanceToViewport = 100.0;
+#define VIEWPORT_WIDTH  200
+#define VIEWPORT_HEIGHT 200
+const double distanceToViewport = 100;
 
 //const double INFINITY = 1e8;
 
@@ -149,6 +149,11 @@ struct Sphere
     Vector3 center;
     double radius;
     Vector3 color;
+    Sphere()
+    {
+        
+    }
+
     // constructor
     Sphere(Vector3 center, double radius, Vector3 color)
     {
@@ -158,6 +163,15 @@ struct Sphere
     }
 };
 
+// Convert from canvas coordinates to viewport coordinates.
+Vector3 CanvasToViewport(Vector2Int &canvasCoord)
+{
+    Vector3 viewport;
+    viewport.x = canvasCoord.x * VIEWPORT_WIDTH / CANVAS_WIDTH;
+    viewport.y = canvasCoord.y * VIEWPORT_HEIGHT / CANVAS_HEIGHT;
+    viewport.z = distanceToViewport;
+    return viewport;
+}
 
 double DotProduct(Vector3 a, Vector3 b)
 {

@@ -7,17 +7,17 @@ Sphere spheres[NumOfSpheres];
 
 void LoadSpheres()
 {
-    spheres[0].center = Vector3(0, 0, 0);
-    spheres[0].radius = 2;
+    spheres[0].center = Vector3(50, 0, 200);
+    spheres[0].radius = 10;
     spheres[0].color = Vector3(0, 1, 0);
 
-    spheres[1].center = Vector3(0, 5, 0);
-    spheres[1].radius = 2;
-    spheres[1].color = Vector3(0, 1, 1);
+    spheres[1].center = Vector3(-50, 50, 100);
+    spheres[1].radius = 10;
+    spheres[1].color = Vector3(0, 0, 1);
 
-    spheres[2].center = Vector3(0, -5, 0);
-    spheres[2].radius = 2;
-    spheres[2].color = Vector3(1, 1, 0);
+    spheres[2].center = Vector3(0, -50, 100);
+    spheres[2].radius = 10;
+    spheres[2].color = Vector3(1, 0, 0);
 }
 
 
@@ -36,9 +36,9 @@ void TraceSpheres()
 {
     Vector3 Origin(0, 0, 0);
 
-    for (int x = -CANVAS_WIDTH / 2; i <= CANVAS_WIDTH / 2; i++)
+    for (int x = -CANVAS_WIDTH / 2; x <= CANVAS_WIDTH / 2; x++)
     {
-        for (int y = -CANVAS_HEIGHT / 2; i <= CANVAS_HEIGHT / 2; i++)
+        for (int y = -CANVAS_HEIGHT / 2; y <= CANVAS_HEIGHT / 2; y++)
         {
             Vector2Int canvas(x, y);
             Vector3 Dir = CanvasToViewport(canvas);
@@ -62,15 +62,6 @@ void display()
     glFlush();
 }
 
-// Convert from canvas coordinates to viewport coordinates.
-Vector3 CanvasToViewport(Vector2Int& canvasCoord)
-{
-    Vector3 viewport;
-    viewport.x = canvasCoord.x * VIEWPORT_WIDTH / CANVAS_WIDTH;
-    viewport.y = canvasCoord.y * VIEWPORT_HEIGHT / CANVAS_HEIGHT;
-    viewport.z = distanceToViewport;
-    return viewport;
-}
 
 
 

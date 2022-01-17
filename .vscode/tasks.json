@@ -7,9 +7,9 @@
             "command": "D:\\Program Files (x86)\\mingw-w64\\i686-8.1.0-posix-dwarf-rt_v6-rev0\\mingw32\\bin\\g++.exe",
             "args": [
                 "-g",
-                "${file}",
+                "main.cpp",
                 "-o",  
-                "${workspaceRoot}/${fileBasenameNoExtension}.exe",  //  Concentrated deposit EXE
+                "${workspaceRoot}/main.exe",  //  Concentrated deposit EXE
 
 
                 "-I",  "${workspaceFolder}/include",   //  The include directory of the library is specified here, the default is not
