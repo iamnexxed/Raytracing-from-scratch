@@ -1,5 +1,5 @@
 #include "global.h"
-
+#include "lights.h"
 
 const int NumOfSpheres = 3;
 
@@ -7,19 +7,84 @@ Sphere spheres[NumOfSpheres];
 
 void LoadSpheres()
 {
-    spheres[0].center = Vector3(50, 0, 200);
-    spheres[0].radius = 10;
+    spheres[0].center = Vector3(-50, 0, 200);
+    spheres[0].radius = 70;
     spheres[0].color = Vector3(0, 1, 0);
 
-    spheres[1].center = Vector3(-50, 50, 100);
-    spheres[1].radius = 10;
+    spheres[1].center = Vector3(50, 70, 200);
+    spheres[1].radius = 100;
     spheres[1].color = Vector3(0, 0, 1);
 
-    spheres[2].center = Vector3(0, -50, 100);
-    spheres[2].radius = 10;
+    spheres[2].center = Vector3(0, -70, 200);
+    spheres[2].radius = 50;
     spheres[2].color = Vector3(1, 0, 0);
+
+    spheres[3].center = Vector3(0, -1000, 200);
+    spheres[3].radius = 1000;
+    spheres[3].color = Vector3(1, 1, 1);
 }
 
+Vector2 IntersectRaySphere(Vector3 &rayOrigin, Vector3 &rayDirection, Sphere &sphere)
+{
+    Vector2 t(-INFINITY, -INFINITY);
+
+    // (t2D, D) + t(2CO, D) + (CO, CO) − r2 = 0
+
+    double a = DotProduct(rayDirection, rayDirection);
+
+    double b = 2 * DotProduct(rayOrigin - sphere.center, rayDirection);
+
+    double c = DotProduct(rayOrigin - sphere.center, rayOrigin - sphere.center) - sphere.radius * sphere.radius;
+
+    double discriminant = b * b - 4 * a * c;
+
+    if (discriminant > 0)
+    {
+        t.x = (-b + sqrt(discriminant)) / (2 * a);
+        t.y = (-b - sqrt(discriminant)) / (2 * a);
+    }
+
+    return t;
+}
+
+Vector3 TraceRayOnSpheres(Vector3 &rayOrigin, Vector3 &rayDirection, double tMin, double tMax, Sphere *spheres, const int NUM_SPHERES)
+{
+    Vector3 color = BLACK;
+
+    double closestT = tMax;
+
+    Sphere *closestSphere = nullptr;
+
+    for (int i = 0; i < NUM_SPHERES; i++)
+    {
+        Vector2 t = IntersectRaySphere(rayOrigin, rayDirection, spheres[i]);
+
+        if (t.x >= tMin && t.x <= tMax && t.x < closestT)
+        {
+            closestT = t.x;
+            closestSphere = &spheres[i];
+        }
+
+        if (t.y >= tMin && t.y <= tMax && t.y < closestT)
+        {
+            closestT = t.y;
+            closestSphere = &spheres[i];
+        }
+    }
+
+    if (closestSphere != nullptr)
+    {
+
+        Vector3 P = rayOrigin + rayDirection * closestT;
+        Vector3 N = P - closestSphere->center;
+        N.Normalize();
+
+        color = closestSphere->color * ComputeLighting(P, N);
+        //color = closestSphere->color;
+    }
+
+    return color;
+}
 
 void DrawPixel(int x, int y, GLfloat r, GLfloat g, GLfloat b)
 {
@@ -87,15 +152,13 @@ int main(int argc, char **argv)
     glClear(GL_COLOR_BUFFER_BIT);
 
     LoadSpheres();
-    // Specifies which matrix stack is the target for subsequent matrix operations. Three values are accepted: GL_MODELVIEW, GL_PROJECTION, and GL_TEXTURE.
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadIdentity();
-    
+    LoadLightSources();
+        // Specifies which matrix stack is the target for subsequent matrix operations. Three values are accepted: GL_MODELVIEW, GL_PROJECTION, and GL_TEXTURE.
+        // glMatrixMode(GL_PROJECTION);
+        // glLoadIdentity();
 
-    // gluOrtho2D — define a 2D orthographic projection matrix
+        // gluOrtho2D — define a 2D orthographic projection matrix
     gluOrtho2D(0.0, CANVAS_WIDTH, CANVAS_HEIGHT, 0.0);
-
-    
 
     // Tell GLUT to start reading and processing events.  This function
     // never returns; the program only exits when the user closes the main

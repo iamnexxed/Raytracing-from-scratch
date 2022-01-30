@@ -1,16 +1,18 @@
+#pragma once
+
 #include <windows.h>
 #include <gl/glut.h>
 #include <math.h>
 
 // canvas properties
 #define CANVAS_WIDTH  600
-#define CANVAS_HEIGHT 500
+#define CANVAS_HEIGHT 600
 const int halfWindowWidth = CANVAS_WIDTH / 2;
 const int halfWindowHeight = CANVAS_HEIGHT / 2;
 
 // View port properties
-#define VIEWPORT_WIDTH  200
-#define VIEWPORT_HEIGHT 200
+#define VIEWPORT_WIDTH  600
+#define VIEWPORT_HEIGHT 600
 const double distanceToViewport = 100;
 
 //const double INFINITY = 1e8;
@@ -140,6 +142,32 @@ struct Vector3
         result.z = this->z - v.z;
         return result;
     }
+
+    double Magnitude()
+    {
+        return std::sqrt(x * x + y * y + z * z);
+    }
+
+    Vector3 operator*(double value)
+    {
+        Vector3 result;
+        result.x = x * value;
+        result.y = y * value;
+        result.z = z * value;
+        return result;
+    }
+
+    void Normalize()
+    {
+        double mag = Magnitude();
+        if(mag > 0)
+        {
+            x = x / mag;
+            y = y / mag;
+            z = z / mag;
+        }
+           
+    }
 };
 
 const Vector3 BLACK(0.0, 0.0, 0.0);
@@ -187,63 +215,4 @@ Vector3 PointOnRay(Vector3& rayOrigin, Vector3& rayDirection, double t)
     pointOnRay.y = rayOrigin.y + rayDirection.y * t;
     pointOnRay.z = rayOrigin.z + rayDirection.z * t;
     return pointOnRay;
-}
-
-Vector2 IntersectRaySphere(Vector3 &rayOrigin, Vector3 &rayDirection, Sphere& sphere)
-{
-    Vector2 t(-INFINITY, -INFINITY);
-
-    // (t2D, D) + t(2CO, D) + (CO, CO) − r2 = 0
-
-    double a = DotProduct(rayDirection, rayDirection);
-
-    double b = 2 * DotProduct(rayOrigin - sphere.center, rayDirection);
-
-    double c = DotProduct(rayOrigin - sphere.center, rayOrigin - sphere.center) - sphere.radius * sphere.radius;
-
-    double discriminant = b * b - 4 * a * c;
-
-    if(discriminant > 0)
-    {
-        t.x = (-b + sqrt(discriminant)) / (2 * a);
-        t.y = (-b - sqrt(discriminant)) / (2 * a);
-    }
-
-    return t;
-}
-
-Vector3 TraceRayOnSpheres(Vector3& rayOrigin, Vector3& rayDirection, double tMin, double tMax, Sphere* spheres, const int NUM_SPHERES)
-{
-    Vector3 color = BLACK;
-
-    double closestT = tMax;
-
-    Sphere* closestSphere = nullptr;
-
-    for (int i = 0; i < NUM_SPHERES; i++)
-    {
-        Vector2 t = IntersectRaySphere(rayOrigin, rayDirection, spheres[i]);
-
-        if(t.x > tMin && t.x < tMax && t.x < closestT)
-        {
-            closestT = t.x;
-            closestSphere = &spheres[i];
-
-        }
-
-        if (t.y > tMin && t.y < tMax && t.y < closestT)
-        {
-            closestT = t.y;
-            closestSphere = &spheres[i];
-        }
-
-
-    }
-
-    if(closestSphere != nullptr)
-    {
-        color = closestSphere->color;
-    }
-
-    return color;
 }
