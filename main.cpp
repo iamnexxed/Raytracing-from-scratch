@@ -45,7 +45,7 @@ void LoadSpheres()
         spheres[i].center = Vector3(0, -100, 1000);
         spheres[i].radius = 100;
         spheres[i].color = Vector3(1, 1, 1);
-        spheres[i].specular = 1000;
+        spheres[i].specular = 10;
         i++;
     }
 }

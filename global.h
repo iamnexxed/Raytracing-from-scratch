@@ -172,9 +172,9 @@ struct Vector3
         double mag = Magnitude();
         if(mag > 0)
         {
-            x = x / mag;
-            y = y / mag;
-            z = z / mag;
+            x /= mag;
+            y /= mag;
+            z /= mag;
         }
            
     }
