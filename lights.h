@@ -28,14 +28,15 @@ void LoadLightSources()
     lightSources[0].position = Vector3(0, 0, 0);
 
     lightSources[1].type = Point;
-    lightSources[1].intensity = 0.8;
+    lightSources[1].intensity = 0.5;
     lightSources[1].position = Vector3(2, 1, 0);
 
     lightSources[2].type = Directional;
     lightSources[2].intensity = 0.8;
-    lightSources[2].direction = Vector3(1, 4, 4);
+    lightSources[2].direction = Vector3(0, 1, 0);
 }
 
+// Light Absorption
 double ComputeLighting(Vector3 point, Vector3 normal)
 {
     double intensity = 0.0;
@@ -58,6 +59,46 @@ double ComputeLighting(Vector3 point, Vector3 normal)
         if(nDotL > 0)
         {
             intensity += lightSources[i].intensity * nDotL / (normal.Magnitude() * L.Magnitude());
+        }
+    }
+    return intensity;
+}
+
+// Absorption and reflection
+double ComputeLighting(Vector3 point, Vector3 normal, Vector3 viewVector, double spec)
+{
+    double intensity = 0.0;
+    Vector3 L(0, 0, 0);
+    for (int i = 0; i < NUMOFLIGHTS; ++i)
+    {
+        if (lightSources[i].type == Ambient)
+        {
+            intensity += lightSources[i].intensity;
+        }
+        else if (lightSources[i].type == Point)
+        {
+            L = lightSources[i].position - point;
+        }
+        else if (lightSources[i].type == Directional)
+        {
+            L = lightSources[i].direction;
+        }
+        double nDotL = DotProduct(normal, L);
+        // Diffuse lighting
+        if (nDotL > 0)
+        {
+            intensity += lightSources[i].intensity * nDotL / (normal.Magnitude() * L.Magnitude());
+        }
+
+        // Specular lighting
+        if(spec > 0)
+        {
+            Vector3 R = normal * DotProduct(normal, L) * 2  - L;
+            double rDotV = DotProduct(R, viewVector);
+            if(rDotV > 0)
+            {
+                intensity += lightSources[i].intensity * std::pow(rDotV / (R.Magnitude() * viewVector.Magnitude()), spec);
+            }
         }
     }
     return intensity;

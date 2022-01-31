@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <gl/glut.h>
 #include <math.h>
+#include <stdio.h>
 
 // canvas properties
 #define CANVAS_WIDTH  600
@@ -13,7 +14,7 @@ const int halfWindowHeight = CANVAS_HEIGHT / 2;
 // View port properties
 #define VIEWPORT_WIDTH  600
 #define VIEWPORT_HEIGHT 600
-const double distanceToViewport = 100;
+const double distanceToViewport = 600;
 
 //const double INFINITY = 1e8;
 
@@ -143,6 +144,15 @@ struct Vector3
         return result;
     }
 
+    Vector3 operator-()
+    {
+        Vector3 result;
+        result.x = -this->x;
+        result.y = -this->y;
+        result.z = -this->z;
+        return result;
+    }
+
     double Magnitude()
     {
         return std::sqrt(x * x + y * y + z * z);
@@ -170,16 +180,20 @@ struct Vector3
     }
 };
 
-const Vector3 BLACK(0.0, 0.0, 0.0);
+const Vector3 BLACK(0, 0, 0);
 
 struct Sphere
 {
     Vector3 center;
     double radius;
     Vector3 color;
+    double specular;
     Sphere()
     {
-        
+        center = Vector3(0, 0, 0);
+        radius = 0;
+        color = Vector3(0, 0, 0);
+        specular = -1;
     }
 
     // constructor
@@ -208,7 +222,7 @@ double DotProduct(Vector3 a, Vector3 b)
 
 
 // get a point on the ray
-Vector3 PointOnRay(Vector3& rayOrigin, Vector3& rayDirection, double t)
+Vector3 PointOnRay(Vector3 rayOrigin, Vector3 rayDirection, double t)
 {
     Vector3 pointOnRay;
     pointOnRay.x = rayOrigin.x + rayDirection.x * t;
