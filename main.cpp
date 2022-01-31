@@ -26,10 +26,10 @@ void LoadSpheres()
         spheres[i].center = Vector3(100, 70, 1000);
         spheres[i].radius = 100;
         spheres[i].color = Vector3(0, 0, 1);
-        spheres[i].specular = 500;
+        spheres[i].specular = 0;
         i++;
     }
-        // Red
+    // Red
     if (i < NumOfSpheres)
     {
         spheres[i].center = Vector3(0, 300, 1000);
