@@ -2,6 +2,7 @@
 #include "lights.h"
 
 const int NumOfSpheres = 4;
+const int RecursionDepth = 3;
 
 Sphere spheres[NumOfSpheres];
 
@@ -16,6 +17,7 @@ void LoadSpheres()
         spheres[i].radius = 70;
         spheres[i].color = Vector3(0, 1, 0);
         spheres[i].specular = 50;
+        spheres[i].reflectivity = 0.3;
         i++;
     }
     
@@ -26,9 +28,11 @@ void LoadSpheres()
         spheres[i].center = Vector3(200, 70, 900);
         spheres[i].radius = 100;
         spheres[i].color = Vector3(0, 0, 1);
-        spheres[i].specular = 0;
+        spheres[i].specular = 100;
+        spheres[i].reflectivity = 0.2;
         i++;
     }
+
     // Red
     if (i < NumOfSpheres)
     {
@@ -36,16 +40,18 @@ void LoadSpheres()
         spheres[i].radius = 100;
         spheres[i].color = Vector3(1, 0, 0);
         spheres[i].specular = 30;
+        spheres[i].reflectivity = 0.2;
         i++;
     }
 
     // White
     if (i < NumOfSpheres)
     {
-        spheres[i].center = Vector3(0, -1050, 1000);
+        spheres[i].center = Vector3(0, -1100, 1000);
         spheres[i].radius = 1000;
         spheres[i].color = Vector3(1, 1, 1);
         spheres[i].specular = 100;
+        spheres[i].reflectivity = 0.3;
         i++;
     }
 }
@@ -74,7 +80,7 @@ void TraceSpheres()
             Vector2Int canvas(x, y);
             Vector3 Dir = CanvasToViewport(canvas);
             //Vector3 color = TraceRayOnSpheres(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres);
-            Vector3 color = TraceRayOnObjects(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres);
+            Vector3 color = TraceRayOnObjects(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres, RecursionDepth);
 
             DrawPixel(x, y, color.x, color.y, color.z);
         }

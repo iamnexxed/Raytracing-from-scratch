@@ -188,12 +188,14 @@ struct Sphere
     double radius;
     Vector3 color;
     double specular;
+    double reflectivity;
     Sphere()
     {
         center = Vector3(0, 0, 0);
         radius = 0;
         color = Vector3(0, 0, 0);
         specular = -1;
+        reflectivity = 0;
     }
 
     // constructor

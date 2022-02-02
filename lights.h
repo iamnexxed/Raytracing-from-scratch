@@ -36,6 +36,12 @@ void LoadLightSources()
     lightSources[2].direction = Vector3(0, 1, 0);
 }
 
+Vector3 ReflectRay(Vector3 ray, Vector3 normal)
+{
+    return normal * DotProduct(normal, ray) * 2 - ray;
+}
+
+
 // Light Absorption
 double ComputeLighting(Vector3 point, Vector3 normal)
 {
@@ -237,3 +243,36 @@ Vector3 TraceRayOnObjects(Vector3 rayOrigin, Vector3 rayDirection, double tMin, 
     return color;
 }
 
+Vector3 TraceRayOnObjects(Vector3 rayOrigin, Vector3 rayDirection, double tMin, double tMax, Sphere *spheres, const int NUM_SPHERES, int recursionDepth)
+{
+    double closestT = 0;
+
+    Sphere *closestSphere = ClosestSphereIntersection(rayOrigin, rayDirection, tMin, tMax, spheres, NUM_SPHERES, closestT);
+
+    Vector3 color = BLACK;
+
+    if (closestSphere != nullptr)
+    {
+
+        Vector3 P = rayOrigin + rayDirection * closestT;
+        Vector3 N = P - closestSphere->center;
+        N.Normalize();
+
+        Vector3 localColor = closestSphere->color * ComputeLighting(P, N, -rayDirection, closestSphere->specular, spheres, NUM_SPHERES);
+
+        double reflectivity = closestSphere->reflectivity;
+        if(recursionDepth > 0 && reflectivity > 0)
+        {
+            Vector3 reflected = ReflectRay(-rayDirection, N);
+            Vector3 reflectedColor = TraceRayOnObjects(P, reflected, 0.001, INFINITY, spheres, NUM_SPHERES, recursionDepth - 1);
+            color = localColor * (1 - reflectivity) + reflectedColor * reflectivity;
+        }
+        else
+        {
+            color = localColor;
+        }
+
+    }
+
+    return color;
+}
