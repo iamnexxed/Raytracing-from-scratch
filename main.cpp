@@ -17,7 +17,7 @@ void LoadSpheres()
         spheres[i].radius = 70;
         spheres[i].color = Vector3(0, 1, 0);
         spheres[i].specular = 50;
-        spheres[i].reflectivity = 0.3;
+        spheres[i].reflectivity = 0;
         i++;
     }
     
@@ -29,7 +29,7 @@ void LoadSpheres()
         spheres[i].radius = 100;
         spheres[i].color = Vector3(0, 0, 1);
         spheres[i].specular = 100;
-        spheres[i].reflectivity = 0.2;
+        spheres[i].reflectivity = 0;
         i++;
     }
 
@@ -40,7 +40,7 @@ void LoadSpheres()
         spheres[i].radius = 100;
         spheres[i].color = Vector3(1, 0, 0);
         spheres[i].specular = 30;
-        spheres[i].reflectivity = 0.2;
+        spheres[i].reflectivity = 0;
         i++;
     }
 
@@ -49,7 +49,7 @@ void LoadSpheres()
     {
         spheres[i].center = Vector3(0, -1100, 1000);
         spheres[i].radius = 1000;
-        spheres[i].color = Vector3(1, 1, 1);
+        spheres[i].color = Vector3(1, 0.5, 1);
         spheres[i].specular = 100;
         spheres[i].reflectivity = 0.3;
         i++;

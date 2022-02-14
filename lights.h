@@ -33,12 +33,12 @@ void LoadLightSources()
 
     lightSources[2].type = Directional;
     lightSources[2].intensity = 0.8;
-    lightSources[2].direction = Vector3(0, 1, 0);
+    lightSources[2].direction = Vector3(1, 1, 0);
 }
 
 Vector3 ReflectRay(Vector3 ray, Vector3 normal)
 {
-    return normal * DotProduct(normal, ray) * 2 - ray;
+    return normal * Vector3::DotProduct(normal, ray) * 2 - ray;
 }
 
 
@@ -61,7 +61,7 @@ double ComputeLighting(Vector3 point, Vector3 normal)
         {
             L = lightSources[i].direction;
         }
-        double nDotL = DotProduct(normal, L);
+        double nDotL = Vector3::DotProduct(normal, L);
         if (nDotL > 0)
         {
             intensity += lightSources[i].intensity * nDotL / (normal.Magnitude() * L.Magnitude());
@@ -76,11 +76,11 @@ Vector2 IntersectRaySphere(Vector3 rayOrigin, Vector3 rayDirection, Sphere &sphe
 
     // (t2D, D) + t(2CO, D) + (CO, CO) − r2 = 0
 
-    double a = DotProduct(rayDirection, rayDirection);
+    double a = Vector3::DotProduct(rayDirection, rayDirection);
 
-    double b = 2 * DotProduct(rayOrigin - sphere.center, rayDirection);
+    double b = 2 * Vector3::DotProduct(rayOrigin - sphere.center, rayDirection);
 
-    double c = DotProduct(rayOrigin - sphere.center, rayOrigin - sphere.center) - sphere.radius * sphere.radius;
+    double c = Vector3::DotProduct(rayOrigin - sphere.center, rayOrigin - sphere.center) - sphere.radius * sphere.radius;
 
     double discriminant = b * b - 4 * a * c;
 
@@ -155,7 +155,7 @@ double ComputeLighting(Vector3 point, Vector3 normal, Vector3 viewVector, double
             }
         }
 
-        double nDotL = DotProduct(normal, L);
+        double nDotL = Vector3::DotProduct(normal, L);
         // Diffuse lighting
         if (nDotL > 0)
         {
@@ -165,8 +165,8 @@ double ComputeLighting(Vector3 point, Vector3 normal, Vector3 viewVector, double
         // Specular lighting
         if (spec > 0)
         {
-            Vector3 R = normal * DotProduct(normal, L) * 2 - L;
-            double rDotV = DotProduct(R, viewVector);
+            Vector3 R = normal * Vector3::DotProduct(normal, L) * 2 - L;
+            double rDotV = Vector3::DotProduct(R, viewVector);
             if (rDotV > 0)
             {
                 intensity += lightSources[i].intensity * std::pow(rDotV / (R.Magnitude() * viewVector.Magnitude()), spec);
