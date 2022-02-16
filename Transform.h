@@ -9,10 +9,11 @@ private:
     Vector3 up;
     Vector3 right;
 
-    Vector3 rotation;
+    
 
 public: 
     Vector3 position;
+    Quaternion rotation;
     Vector3 scale;
 
 
@@ -39,19 +40,38 @@ public:
 
     void SetRotationAngles(double x, double y, double z)
     {
-        rotation.x = x;
-        rotation.y = y;
-        rotation.z = z;
+        rotation = Quaternion::ToQuaternion(z, y, x);
 
-        //forward.x = ;//set direction values according to matrix operations
+        up -= position;
+        forward -= position;
+        right -= position;
+
+        // Rotation along forward axis rotates up and right
+        if(z != 0)
+        {
+            up = Quaternion::RotateVector(up, z, WorldSpace::forward);
+            right = Quaternion::RotateVector(right, z, WorldSpace::forward);
+        }
         
+
+        // Rotation along up axis rotates forward and right
+        if(y != 0)
+        {
+            forward = Quaternion::RotateVector(forward, y, WorldSpace::up);
+            right = Quaternion::RotateVector(right, y, WorldSpace::up);
+        }
+       
+        // Rotation along right axis rotates up and forward
+        if(x != 0)
+        {
+            up = Quaternion::RotateVector(up, x, WorldSpace::right);
+            forward = Quaternion::RotateVector(forward, x, WorldSpace::right);
+        }
+
+        up += position;
+        forward += position;
+        right += position;
     }
 
-    Vector3 GetAngles()
-    {
-        return rotation;
-    }
-
-   
     
 };

@@ -6,6 +6,14 @@ const int RecursionDepth = 3;
 
 Sphere spheres[NumOfSpheres];
 
+Camera camera;
+
+void LoadCamera()
+{
+    camera.transform.SetRotationAngles(0, 0, 0);
+
+}
+
 void LoadSpheres()
 {
 
@@ -78,9 +86,9 @@ void TraceSpheres()
         for (int y = -CANVAS_HEIGHT / 2; y <= CANVAS_HEIGHT / 2; y++)
         {
             Vector2Int canvas(x, y);
-            Vector3 Dir = CanvasToViewport(canvas);
+            Vector3 Dir = camera.transform.rotation * CanvasToViewport(canvas);
             //Vector3 color = TraceRayOnSpheres(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres);
-            Vector3 color = TraceRayOnObjects(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres, RecursionDepth);
+            Vector3 color = TraceRayOnObjects(camera.transform.position, Dir, 1, INFINITY, spheres, NumOfSpheres, RecursionDepth);
 
             DrawPixel(x, y, color.x, color.y, color.z);
         }
@@ -118,6 +126,7 @@ int main(int argc, char **argv)
     // should call the function display().
     LoadSpheres();
     LoadLightSources();
+    LoadCamera();
 
     glutDisplayFunc(display);
     glClear(GL_COLOR_BUFFER_BIT);

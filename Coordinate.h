@@ -107,7 +107,7 @@ public:
         this->z = z;
     }
 
-    const static Vector3 zero;
+    static const Vector3 zero;
 
     // overload + operator
     Vector3 operator+(const Vector3 &v)
@@ -150,6 +150,20 @@ public:
         result.y = y * value;
         result.z = z * value;
         return result;
+    }
+
+    void operator+=(const Vector3 &v)
+    {
+        this->x = this->x + v.x;
+        this->y = this->y + v.y;
+        this->z = this->z + v.z;
+    }
+
+    void operator-=(const Vector3 &v)
+    {
+        this->x = this->x - v.x;
+        this->y = this->y - v.y;
+        this->z = this->z - v.z;
     }
 
     void Normalize()
@@ -200,6 +214,8 @@ public:
     }
 };
 
+// Static variables definition
+const Vector3 Vector3::zero = Vector3(0, 0, 0);
 
 
 // 1 Unit Distance away
@@ -248,6 +264,11 @@ public:
         result.img.z = real * other.img.z + img.x * other.img.y - img.y * other.img.x + img.z * other.real;
         return result;
 
+    }
+
+    Vector3 operator*(const Vector3 &other)
+    {
+        return RotateVector(other, *this);
     }
 
     static Quaternion RotationAroundAxis(double angleRadians, Vector3 axis)
@@ -307,5 +328,10 @@ public:
         eulerAngles.z = std::atan2(2 * (quaternion.real * quaternion.img.z + quaternion.img.x * quaternion.img.y), 1 - 2 * (quaternion.img.y * quaternion.img.y + quaternion.img.z * quaternion.img.z));
 
         return eulerAngles;
+    }
+
+    Vector3 ToEulerAngles()
+    {
+        return ToEulerAngles(*this);
     }
 };

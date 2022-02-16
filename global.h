@@ -4,6 +4,7 @@
 #include <gl/glut.h>
 #include "Coordinate.h"
 #include <stdio.h>
+#include "Camera.h"
 
 // canvas properties
 #define CANVAS_WIDTH  600
@@ -20,6 +21,8 @@ const double distanceToViewport = 600;
 
 
 const Vector3 BLACK(0, 0, 0);
+
+
 
 struct Sphere
 {
