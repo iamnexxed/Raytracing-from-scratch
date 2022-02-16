@@ -38,34 +38,35 @@ public:
         return up;
     }
 
-    void SetRotationAngles(double x, double y, double z)
+
+    void SetRotationAngles(double xRad, double yRad, double zRad)
     {
-        rotation = Quaternion::ToQuaternion(z, y, x);
+        rotation = Quaternion::ToQuaternion(zRad, yRad, xRad);
 
         up -= position;
         forward -= position;
         right -= position;
 
         // Rotation along forward axis rotates up and right
-        if(z != 0)
+        if (zRad != 0)
         {
-            up = Quaternion::RotateVector(up, z, WorldSpace::forward);
-            right = Quaternion::RotateVector(right, z, WorldSpace::forward);
+            up = Quaternion::RotateVector(up, zRad, WorldSpace::forward);
+            right = Quaternion::RotateVector(right, zRad, WorldSpace::forward);
         }
         
 
         // Rotation along up axis rotates forward and right
-        if(y != 0)
+        if (yRad != 0)
         {
-            forward = Quaternion::RotateVector(forward, y, WorldSpace::up);
-            right = Quaternion::RotateVector(right, y, WorldSpace::up);
+            forward = Quaternion::RotateVector(forward, yRad, WorldSpace::up);
+            right = Quaternion::RotateVector(right, yRad, WorldSpace::up);
         }
        
         // Rotation along right axis rotates up and forward
-        if(x != 0)
+        if (xRad != 0)
         {
-            up = Quaternion::RotateVector(up, x, WorldSpace::right);
-            forward = Quaternion::RotateVector(forward, x, WorldSpace::right);
+            up = Quaternion::RotateVector(up, xRad, WorldSpace::right);
+            forward = Quaternion::RotateVector(forward, xRad, WorldSpace::right);
         }
 
         up += position;
