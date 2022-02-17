@@ -2,6 +2,9 @@
 
 #include <math.h>
 
+#define EPSILON 0.001
+
+
 struct Vector2Int
 {
     int x;
@@ -178,6 +181,15 @@ public:
         this->z = this->z - v.z;
     }
 
+    bool operator==(const Vector3 &v)
+    {
+        if (std::abs(this->x - v.x) > EPSILON || std::abs(this->y - v.y) > EPSILON || std::abs(this->z - v.z) > EPSILON)
+        {
+            return false;
+        }
+        return true;
+    }
+
     void Normalize()
     {
         double mag = Magnitude();
@@ -218,22 +230,16 @@ public:
     {
         return Vector3((a.y * b.z) - (a.x * b.z), -((a.x * b.z) - (a.z * b.x)), (a.x * b.y) - (a.y * b.x));
     }
-
-    static Vector3 RotateVectorAround(Vector3 vector, Vector3 axis, double angleRadians)
-    {
-        // Rodrigues rotation: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
-        return vector * std::cos(angleRadians) + CrossProduct(axis, vector) * std::sin(angleRadians) + axis * (1 - std::cos(angleRadians)) * DotProduct(axis, vector);
-    }
 };
 
 // Static variables definition
 const Vector3 Vector3::zero = Vector3(0, 0, 0);
 
 // Multiplies a matrix and a vector.
-Vector3 MultiplyMV(double mat[3][3], Vector3 vec)
+Vector3 MultiplyMV(const double mat[3][3], const Vector3 vec)
 {
-    double result[3];
-    double newVec[] = {vec.x, vec.y, vec.z};
+    double result[3] = {0, 0, 0};
+    double newVec[3] = {vec.x, vec.y, vec.z};
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -287,7 +293,7 @@ public:
         Quaternion result;
         result.real = real * other.real - img.x * other.img.x - img.y * other.img.y - img.z * other.img.z;
         result.img.x = img.x * other.real + real * other.img.x + img.y * other.img.z - img.z * other.img.y;
-        result.img.y = real * other.img.y - img.x * other.img.z + img.y * other.real + img.z * other.img.y;
+        result.img.y = real * other.img.y - img.x * other.img.z + img.y * other.real + img.z * other.img.x;
         result.img.z = real * other.img.z + img.x * other.img.y - img.y * other.img.x + img.z * other.real;
         return result;
 
@@ -310,7 +316,19 @@ public:
         // v_new = v + (2 * q_img) x (q_img x v + (q_real * v))
         // * denotes scalar multiplication
         // x denotes cross product
-        return v + Vector3::CrossProduct((q.img) * 2, (Vector3::CrossProduct(q.img, v) + v * q.real));
+        //return v + Vector3::CrossProduct((q.img) * 2, (Vector3::CrossProduct(q.img, v) + v * q.real));
+
+        Quaternion _q = q;
+        _q.img = -_q.img;
+
+        Quaternion vecQuat;
+        vecQuat.real = 0;
+        vecQuat.img = v;
+
+        Quaternion result = q * vecQuat * _q;
+        //result = result * _q;
+        return result.img;
+
     }
 
     static Vector3 RotateVector(Vector3 v, double angleRadians, Vector3 axis)
