@@ -20,9 +20,9 @@ public:
 public:
     Transform()
     {
-        Vector3::SetVector(forward, position + WorldSpace::forward);
-        Vector3::SetVector(up, position + WorldSpace::up);
-        Vector3::SetVector(right, position + WorldSpace::right);
+        Vector3::SetVector(forward, WorldSpace::forward);
+        Vector3::SetVector(up, WorldSpace::up);
+        Vector3::SetVector(right, WorldSpace::right);
     }
 
     Vector3 GetForward()
@@ -43,10 +43,6 @@ public:
     {
         rotation = Quaternion::ToQuaternion(zRad, yRad, xRad);
 
-        up -= position;
-        forward -= position;
-        right -= position;
-
         // Rotation along forward axis rotates up and right
         if (zRad != 0)
         {
@@ -54,7 +50,6 @@ public:
             right = Quaternion::RotateVector(right, zRad, WorldSpace::forward);
         }
         
-
         // Rotation along up axis rotates forward and right
         if (yRad != 0)
         {
@@ -69,9 +64,6 @@ public:
             forward = Quaternion::RotateVector(forward, xRad, WorldSpace::right);
         }
 
-        up += position;
-        forward += position;
-        right += position;
     }
 
     

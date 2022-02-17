@@ -9,5 +9,4 @@ class Camera
 {
 public:
     Transform transform;
-    
 };
