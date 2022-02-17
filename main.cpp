@@ -8,11 +8,15 @@ Sphere spheres[NumOfSpheres];
 
 Camera camera;
 
+double camera_rotation[3][3] = { 0.7071,    -0.7071,    0 ,
+                            0.7071,     0.7071,     0 ,
+                             0,         0,          1  };
+
+
 void LoadCamera()
 {
-    camera.transform.position = Vector3(700, 0, 0);
-    camera.transform.SetRotationAngles(0, -M_PI_4, 0);
-
+    camera.transform.position = Vector3(0, 0, -10);
+    camera.transform.SetRotationAngles((M_PI / 180) * (0), (M_PI / 180) * (0), (M_PI / 180) * (45));
 }
 
 void LoadSpheres()
@@ -80,15 +84,18 @@ void DrawPixel(int x, int y, GLfloat r, GLfloat g, GLfloat b)
 
 void TraceSpheres()
 {
-    Vector3 Origin(0, 0, 0);
+    Vector3 cameraRotation = camera.transform.rotation.ToEulerAngles();
 
-    for (int x = -CANVAS_WIDTH / 2; x <= CANVAS_WIDTH / 2; x++)
+    for (int x = -CANVAS_WIDTH / 2; x < CANVAS_WIDTH / 2; x++)
     {
-        for (int y = -CANVAS_HEIGHT / 2; y <= CANVAS_HEIGHT / 2; y++)
+        for (int y = -CANVAS_HEIGHT / 2; y < CANVAS_HEIGHT / 2; y++)
         {
             Vector2Int canvas(x, y);
             Vector3 Dir = camera.transform.rotation * CanvasToViewport(canvas);
-            //Vector3 color = TraceRayOnSpheres(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres);
+            //Vector3 Dir = CanvasToViewport(canvas);
+            //Dir = MultiplyMV(camera_rotation, Dir);
+            // Dir.Normalize();
+            // Vector3 color = TraceRayOnSpheres(Origin, Dir, 1, INFINITY, spheres, NumOfSpheres);
             Vector3 color = TraceRayOnObjects(camera.transform.position, Dir, 1, INFINITY, spheres, NumOfSpheres, RecursionDepth);
 
             DrawPixel(x, y, color.x, color.y, color.z);

@@ -19,6 +19,12 @@ struct Vector2Int
         this->y = y;
     }
 
+    Vector2Int(double x, double y)
+    {
+        this->x = (int)(x);
+        this->y = (int)(y);
+    }
+
     // overload + operator
     Vector2Int operator+(const Vector2Int &v)
     {
@@ -26,6 +32,12 @@ struct Vector2Int
         result.x = x + v.x;
         result.y = y + v.y;
         return result;
+    }
+
+    void Rotate(double angleRad)
+    {
+        x = x * std::cos(angleRad) - y * sin(angleRad);
+        y = x * std::sin(angleRad) - y * cos(angleRad);
     }
 };
 
@@ -217,6 +229,21 @@ public:
 // Static variables definition
 const Vector3 Vector3::zero = Vector3(0, 0, 0);
 
+// Multiplies a matrix and a vector.
+Vector3 MultiplyMV(double mat[3][3], Vector3 vec)
+{
+    double result[3];
+    double newVec[] = {vec.x, vec.y, vec.z};
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            result[i] += newVec[j] * mat[i][j];
+        }
+    }
+
+    return Vector3(result[0], result[1], result[2]);
+}
 
 // 1 Unit Distance away
 namespace WorldSpace
@@ -315,6 +342,7 @@ public:
         return ToQuaternion(eulerAngles.z, eulerAngles.y, eulerAngles.x);
     }
 
+    // Returns angle in radians
     static Vector3 ToEulerAngles(Quaternion quaternion)
     {
         Vector3 eulerAngles;
@@ -330,6 +358,7 @@ public:
         return eulerAngles;
     }
 
+    // Returns angle in radians
     Vector3 ToEulerAngles()
     {
         return ToEulerAngles(*this);

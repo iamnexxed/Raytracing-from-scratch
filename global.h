@@ -13,9 +13,9 @@ const int halfWindowWidth = CANVAS_WIDTH / 2;
 const int halfWindowHeight = CANVAS_HEIGHT / 2;
 
 // View port properties
-#define VIEWPORT_WIDTH  600
-#define VIEWPORT_HEIGHT 600
-const double distanceToViewport = 600;
+#define VIEWPORT_WIDTH  1
+#define VIEWPORT_HEIGHT 1
+const double distanceToViewport = 1;
 
 //const double INFINITY = 1e8;
 
@@ -53,8 +53,8 @@ struct Sphere
 Vector3 CanvasToViewport(Vector2Int &canvasCoord)
 {
     Vector3 viewport;
-    viewport.x = canvasCoord.x * VIEWPORT_WIDTH / CANVAS_WIDTH;
-    viewport.y = canvasCoord.y * VIEWPORT_HEIGHT / CANVAS_HEIGHT;
+    viewport.x = canvasCoord.x * VIEWPORT_WIDTH / (double)CANVAS_WIDTH;
+    viewport.y = canvasCoord.y * VIEWPORT_HEIGHT / (double)CANVAS_HEIGHT;
     viewport.z = distanceToViewport;
     return viewport;
 }
