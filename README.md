@@ -2,8 +2,13 @@
 
 Exploring the the technique of raytracing spheres using the simplest possible method DrawPixel.
 
-Implemented Camera view port functionality. Added Directional, Ambient and Point lights. Learned to create shadows and reflections.
+The template has following functionalities:
+- Camera view port (WIDTH, HEIGHT, POSITION, ROTATION)
+- Directional, Ambient and Point lights
+- Shadows
+- Reflections
+- Quaternion Rotations
 
-Developed personalized quaternions and used them to apply rotation to camera.
+All the functionalities were developed from scratch to understand the process behind game engine development.
 
 ![Image 0](https://github.com/iamnexxed/Raytracing-from-scratch/blob/main/images/RT1.png)
