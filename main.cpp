@@ -10,7 +10,7 @@ Camera camera;
 
 void LoadCamera()
 {
-    camera.transform.position = Vector3(1000, 1000, -10);
+    camera.transform.position = Vector3(1000, 500, 10);
     camera.transform.SetRotationAngles((M_PI / 180) * (30), (M_PI / 180) * (-45), (M_PI / 180) * (0));
 }
 
