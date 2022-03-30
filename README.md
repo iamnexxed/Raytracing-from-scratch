@@ -1,6 +1,6 @@
 # Raytracing-from-scratch
 
-Exploring the the technique of raytracing using the simplest possible method DrawPixel.
+Exploring the the technique of raytracing spheres using the simplest possible method DrawPixel.
 
 Implemented Camera view port functionality
 
