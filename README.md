@@ -1,6 +1,6 @@
 # Raytracing-from-scratch
 
-Exploring the the technique of raytracing spheres using the simplest possible method DrawPixel.
+Exploring the the technique of raytracing spheres using the simplest possible method DrawPixel() in C++.
 
 The template has following functionalities:
 - Camera view port (WIDTH, HEIGHT, POSITION, ROTATION)
