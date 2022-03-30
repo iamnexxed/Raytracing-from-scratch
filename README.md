@@ -2,7 +2,7 @@
 
 Exploring the the technique of raytracing spheres using the simplest possible method DrawPixel.
 
-Implemented Camera view port functionality
+Implemented Camera view port functionality.
 
 Developed personalized quaternions and used them to apply rotation to camera.
 
