@@ -11,8 +11,6 @@ The template has following functionalities:
 
 All the functionalities were developed from scratch to understand the process behind game engine development.
 
-![Image 0](https://github.com/iamnexxed/Raytracing-from-scratch/blob/main/images/RT1.png)
+![Raytracing](https://github.com/iamnexxed/Raytracing-from-scratch/blob/main/images/RT1.png)
 
-<p align="center">
-  <img src="/images/RT1.png" width="350" title="Raytracing">
-</p>
+
