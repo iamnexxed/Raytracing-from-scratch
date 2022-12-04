@@ -11,6 +11,6 @@ The template has following functionalities:
 
 All the functionalities were developed from scratch to understand the process behind game engine development.
 
-![Raytracing](/images/RT1.png)
+![Raytracing](./images/RT1.png)
 
 
